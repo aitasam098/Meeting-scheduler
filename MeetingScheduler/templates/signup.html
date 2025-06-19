@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Signup</title>
+    <style>
+        *{
+            color: white;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: black;
+            padding: 30px;
+            border-radius: 10px;
+            width: 350px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            text-align: center;
+        }
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #5e5b34;
+            border-radius: 5px;
+            background: var(--bg-800)
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        a {
+            text-decoration: none;
+            color: #333;
+        }
+        p {
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Signup</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label>Name:</label>
+        <input type="text" name="name" value="{{ name|default:'' }}" required>
+                
+
+
+        <label>Email:</label>
+        <input type="email" name="email" value="{{ email|default:'' }}" required>
+
+        <label>Password:</label>
+        <input type="password" name="password" required>
+
+        {% if show_code_input %}
+            <label>Verification Code (sent to your email):</label>
+            <input type="text" name="code" required>
+        {% endif %}
+
+        <button type="submit">
+            {% if show_code_input %}Verify Code{% else %}Signup{% endif %}
+        </button>
+    </form>
+    
+    {% if message %}
+        <p style="color: red;">{{ message }}</p>
+    {% endif %}
+
+    <p>Already registered? <a href="{% url 'login' %}">Login</a></p>
+</div>
+</body>
+</html>

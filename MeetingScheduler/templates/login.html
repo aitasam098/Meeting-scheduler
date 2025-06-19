@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <style>
+        * {
+    color: white;
+}
+
+        body {
+            font-family: Arial, sans-serif;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: black;
+            padding: 30px;
+            border-radius: 10px;
+            width: 350px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #5e5b34;
+            border-radius: 5px;
+            background: var(--bg-800)
+        }
+        button {
+            background-color: #5e5b34;
+            color: black;
+            width: 100%;
+            padding: 10px;
+            
+            border-radius: 5px;
+            cursor: pointer;
+                        border: 1px solid #5e5b34;
+
+        }
+        p {
+            text-align: center;
+            margin-top: 15px;
+        }
+        a {
+            color: #00796b;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Login</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label>Email:</label>
+        <input type="email" name="email" required>
+
+        <label>Password:</label>
+        <input type="password" name="password" required>
+
+        <button type="submit">Login</button>
+    </form>
+    <p>Have no account? <a href="{% url 'Signup' %}">Signup here</a></p>
+</div>
+</body>
+</html>
