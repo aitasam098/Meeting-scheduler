@@ -7,14 +7,30 @@ import random
 import threading
 from django.contrib.auth.decorators import login_required
 
-def send_verification_email(email, verification_code):
+def send_verification_email(name, email, verification_code):
+    subject = 'Account Verification Code'
+    message = f"""
+Dear {name},
+
+Thank you for signing up with **Accounting and Tax Services**!
+
+To complete your registration, please use the verification code below:
+
+🔐 Verification Code: {verification_code}
+
+If you didn't request this, please ignore this email.
+
+Regards,  
+Team Accounting and Tax Services
+"""
     send_mail(
-        subject='Your Student Signup Verification Code',
-        message=f'Your verification code is: {verification_code}',
-        from_email='your_email@gmail.com',
+        subject=subject,
+        message=message,
+        from_email='projectdjango069@gmail.com', 
         recipient_list=[email],
         fail_silently=False,
     )
+
 
 def signup(request):
     if request.method == 'POST':
@@ -39,7 +55,7 @@ def signup(request):
                 messages.success(request, "Signup successful! Please login.")
                 return redirect('login')
             else:
-                return render(request, 'signup_here.html', {
+                return render(request, 'Signup.html', {
                     'show_code_input': True,
                     'message': 'Invalid verification code!',
                     'name': request.session.get('temp_name'),
@@ -58,16 +74,16 @@ def signup(request):
         request.session['temp_password'] = password
         request.session['verification_code'] = verification_code
 
-        threading.Thread(target=send_verification_email, args=(email, verification_code)).start()
+        threading.Thread(target=send_verification_email, args=(name,email, verification_code)).start()
 
-        return render(request, 'signup.html', {
+        return render(request, 'Signup.html', {
             'show_code_input': True,
             'message': 'Verification code sent to your email.',
             'name': name,
             'email': email
         })
 
-    return render(request, 'signup.html')
+    return render(request, 'Signup.html')
 
 
 def login(request):
@@ -78,10 +94,10 @@ def login(request):
         try:
             client = clients.objects.get(email=email)
             if client.password == password:
-                # Save login state in session
+                
                 request.session['client_id'] = client.id
                 request.session['client_name'] = client.name
-                return redirect('dashboard')  # Redirect to a dashboard or homepage
+                return redirect('dashboard')  
             else:
                 messages.error(request, 'Incorrect password.')
         except clients.DoesNotExist:
@@ -95,3 +111,7 @@ def login(request):
 def logout(request):
     request.session.flush()
     return redirect('login')
+
+def dashboard(request):
+    client_name = request.session.get('client_name', 'User')
+    return render(request, 'dashboard.html', {'name': client_name})
