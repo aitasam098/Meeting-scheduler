@@ -128,5 +128,28 @@ button {
 button:hover {
   background: var(--accent-hover);
 }
+.logout-btn {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      background-color: #e74c3c;
+      color: white;
+      padding: 8px 12px;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 14px;
+    }
 
+    .logout-btn:hover {
+      background-color: #c0392b;
+    }
+
+    /* Optional style for sidebar logout link */
+    .logout-link {
+      color: #e74c3c;
+    }
+
+    .logout-link:hover {
+      text-decoration: underline;
+    }
 /* CALENDAR BELOW FORM */

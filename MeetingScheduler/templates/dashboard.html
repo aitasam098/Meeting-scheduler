@@ -18,6 +18,9 @@
   <header>
     <div class="green-bar"></div>
     <img src="{% static 'images/logo1.png' %}" alt="Logo" class="logo" />
+
+    <!-- Logout Button in Header -->
+    <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
   </header>
 
   <div class="container">
@@ -25,10 +28,11 @@
     <aside class="sidebar">
       <nav>
         <ul>
-          <li><a href="#">Dashboard</a></li>
-          <li><a class="active" href="#">Book A Meeting</a></li>
-          <li><a href="#">Meeting Status</a></li>
+          <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+          <li><a class="active" href="{% url 'book_meeting' %}">Book A Meeting</a></li>
+          <li><a href="{% url 'meeting_status' %}">Meeting Status</a></li>
           <li><a href="#">Settings</a></li>
+          <li><a href="{% url 'logout' %}" class="logout-link">Logout</a></li> <!-- Logout in Sidebar -->
         </ul>
       </nav>
     </aside>
@@ -36,22 +40,36 @@
     <!-- Main Content -->
     <main class="main-content">
       <h1>Book A Meeting</h1>
-      <form class="form">
-        <label>Name <input type="text" placeholder="Enter name" /></label>
-        <label>Reg No. <input type="text" placeholder="Enter registration no" /></label>
+
+      {% if messages %}
+        {% for message in messages %}
+          <p style="color: lightgreen;">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+
+      <form class="form" method="POST" action="{% url 'book_meeting' %}">
+        {% csrf_token %}
+        <label>Name
+          <input type="text" value="{{ request.session.client_name }}" disabled />
+        </label>
+        <label>Reg No.
+          <input type="text" name="reg_no" placeholder="Enter registration no" required />
+        </label>
         <label>Meeting Type
-          <select>
+          <select name="meeting_type" required>
             <option value="onsite">Onsite</option>
             <option value="online">Online</option>
           </select>
         </label>
-        <label>Date <input type="date" /></label>
-        <label>Time <input type="time" /></label>
+        <label>Date
+          <input type="date" name="date" required />
+        </label>
+        <label>Time
+          <input type="time" name="time" required />
+        </label>
         <button type="submit">Book Now</button>
       </form>
 
-      <!-- Calendly Embed -->
-      
     </main>
   </div>
 </body>

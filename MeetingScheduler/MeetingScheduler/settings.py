@@ -62,7 +62,7 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-
+LOGIN_URL = '/login/'
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},

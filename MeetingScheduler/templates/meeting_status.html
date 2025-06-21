@@ -1,0 +1,191 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Meeting Status</title>
+  <style>
+    :root {
+      --bg-900: #101011;
+      --bg-800: #18191a;
+      --bg-700: #2a2b2e; 
+      --text-100: #f1f1f1;
+      --accent: #5e5b34;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg-900);
+      color: var(--text-100);
+    }
+
+    header {
+      height: 100px;
+      background: var(--bg-800);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      position: relative;
+    }
+
+    .logout-btn {
+      background-color: #e74c3c;
+      color: white;
+      padding: 8px 12px;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .logout-btn:hover {
+      background-color: #c0392b;
+    }
+
+    .container {
+      display: flex;
+      min-height: calc(100vh - 100px);
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 260px;
+      background-color: var(--accent);
+      color: white;
+      padding: 30px 20px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      margin: 20px 0;
+    }
+
+    .sidebar ul li a {
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+    }
+
+    .sidebar ul li a.active {
+      color: rgb(10, 10, 10);
+      font-weight: bold;
+    }
+
+    /* MAIN CONTENT */
+    .main-content {
+      flex: 1;
+      padding: 40px;
+      background: var(--bg-800);
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--text-100);
+      margin-bottom: 20px;
+    }
+
+    .records-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: var(--bg-800);
+      color: var(--text-100);
+    }
+
+    .records-table th,
+    .records-table td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid var(--accent);
+    }
+
+    .records-table th {
+      background: var(--bg-700);
+      font-weight: bold;
+    }
+
+    .logout-link {
+      color: #e74c3c;
+    }
+
+    .logout-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="{% static 'images/logo1.png' %}" alt="Logo" style="height: 80px;" />
+    <!-- Logout in Header -->
+    <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+  </header>
+
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <nav>
+        <ul>
+          <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+          <li><a href="{% url 'book_meeting' %}">Book A Meeting</a></li>
+          <li><a class="active" href="{% url 'meeting_status' %}">Meeting Status</a></li>
+          <li><a href="#">Settings</a></li>
+          <li><a href="{% url 'logout' %}" class="logout-link">Logout</a></li> <!-- Logout in Sidebar -->
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Table Content -->
+    <main class="main-content">
+      <h2>Meeting Status</h2>
+      <table id="records-table" class="records-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Tax Type</th>
+            <th>Filing Status</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Data rows will be added by JavaScript -->
+        </tbody>
+      </table>
+    </main>
+  </div>
+
+  <script>
+    function addOwnerRecord({ name, email, taxType, filingStatus, time }) {
+      const tableBody = document.querySelector('#records-table tbody');
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${name}</td>
+        <td>${email}</td>
+        <td>${taxType}</td>
+        <td>${filingStatus}</td>
+        <td>${time}</td>
+      `;
+      tableBody.appendChild(row);
+    }
+
+    // Inject meetings using Django data
+    {% for m in meetings %}
+      addOwnerRecord({
+        name: "{{ m.client.name }}",
+        email: "{{ m.client.email }}",
+        taxType: "{{ m.meeting_type }}",
+        filingStatus: "{{ m.reg_no }}",
+        time: "{{ m.date }} {{ m.time }}"
+      });
+    {% endfor %}
+  </script>
+
+</body>
+</html>
