@@ -19,7 +19,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'meetings',  # your app
+    'meetings',
 ]
 
 MIDDLEWARE = [
@@ -51,7 +51,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'MeetingScheduler.wsgi.application'
 
-# Database configuration for MySQL (local)
+# Database 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

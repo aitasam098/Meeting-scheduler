@@ -1,6 +1,6 @@
 from django.db import models
 
-# 🔹 Clients Table
+#  Clients Table
 class clients(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
@@ -9,8 +9,8 @@ class clients(models.Model):
 
     def __str__(self):
         return self.name
-    
 
+#   Owner Table
 class Owner(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
@@ -20,7 +20,7 @@ class Owner(models.Model):
         return self.name    
 
 
-# 🔹 Meetings Table
+#  Meetings Table
 class Meeting(models.Model):
     client = models.ForeignKey(clients, on_delete=models.CASCADE)
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE, null=True)  # ← ensure this exists
@@ -28,4 +28,4 @@ class Meeting(models.Model):
     meeting_type = models.CharField(max_length=100)
     date = models.DateField()
     time = models.TimeField() 
-
+    

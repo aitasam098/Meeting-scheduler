@@ -189,3 +189,38 @@
 
 </body>
 </html>
+
+
+
+
+
+#!/bin/bash
+
+# 1. Define the grades array
+grades=(85 92 78 65 95)
+
+# 2. Initialize counters
+passing_count=0
+failing_count=0
+
+# 3. Iterate through the grades
+for grade in "${grades[@]}"
+do
+  # 4. Check if grade is passing or failing
+  if [ "$grade" -ge 70 ]; then
+    ((passing_count++))
+  else
+    ((failing_count++))
+  fi
+done
+
+# 5. Print totals
+echo "Total passing grades: $passing_count"
+echo "Total failing grades: $failing_count"
+
+# 6. Final message
+if [ "$passing_count" -gt "$failing_count" ]; then
+  echo "Most students passed!"
+else
+  echo "More students need to work harder."
+fi

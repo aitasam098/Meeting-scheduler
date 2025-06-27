@@ -8,7 +8,7 @@ import threading
 import random
 
 
-# 🔹 Send email verification
+#  Send email verification
 def send_verification_email(name, email, verification_code):
     subject = 'Account Verification Code'
     message = f"""
@@ -34,7 +34,7 @@ Team Accounting and Tax Services
     )
 
 
-# 🔹 Signup View
+#  Signup View
 def signup(request):
     if request.method == 'POST':
         if 'code' in request.POST:
@@ -84,7 +84,7 @@ def signup(request):
     return render(request, 'Signup.html')
 
 
-# 🔹 Login View
+#  Login View
 
 def login(request):
     if request.method == 'POST':
@@ -121,14 +121,14 @@ def login(request):
 
 
 
-# 🔹 Logout View
+#  Logout View
 @login_required(login_url='/login/')
 def logout(request):
     request.session.flush()
     return redirect('login')
 
 
-# 🔹 Dashboard
+#  Dashboard
 def dashboard(request):
     if 'client_id' not in request.session:
         return redirect('login')  # Prevents redirect loop
@@ -136,7 +136,7 @@ def dashboard(request):
 
 
 
-# 🔹 Book Meeting (Client)
+#  Book Meeting (Client)
 def book_meeting(request):
     if request.method == 'POST':
         client_id = request.session.get('client_id')
@@ -145,20 +145,20 @@ def book_meeting(request):
 
         client = clients.objects.get(id=client_id)
 
-        # 🔴 Step 1: Get an existing owner
+        #  Step 1: Get an existing owner
         owner = Owner.objects.first()
         if not owner:
             messages.error(request, "No owner found to assign the meeting.")
             return redirect('dashboard')
 
-        # 🔴 Step 2: Collect meeting data
+        #  Step 2: Collect meeting data
         reg_no = request.POST['reg_no']
         meeting_type = request.POST['meeting_type']
         date = request.POST['date']
         time = request.POST['time']
         print("OWNER:", owner)  # Debug print
         print("OWNER ID:", owner.id)
-        # 🔴 Step 3: Create meeting with owner
+        #  Step 3: Create meeting with owner
         Meeting.objects.create(
             client=client,
             owner=owner,
@@ -173,7 +173,7 @@ def book_meeting(request):
 
     return render(request, 'book_meeting.html')
  
-# 🔹 Show All Meetings (Manager/Owner)
+#  Show All Meetings (Manager/Owner)
 def meeting_status(request):
     if 'owner_id' not in request.session:
         return redirect('login')
